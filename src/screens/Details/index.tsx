@@ -1,14 +1,57 @@
 import React from "react";
-import { View, Text } from "react-native";
 
-// import { Container } from './styles';
+import {
+  Avatar,
+  Card,
+  CardTitle,
+  Container,
+  Content,
+  Description,
+  Name,
+  Row,
+} from "./styles";
+import useDetail from "../../hooks/useDetail";
 
-const Home: React.FC = () => {
+const Detail: React.FC = () => {
+  const {
+    states: { character },
+  } = useDetail();
   return (
-    <View>
-      <Text>Details</Text>
-    </View>
+    <Container>
+      <Avatar
+        source={{
+          uri: character.thumbnail,
+        }}
+        sharedTransitionTag={`avatar${String(character.id)}`}
+      />
+      <Name sharedTransitionTag={`name${String(character.id)}`}>
+        {character.name}
+      </Name>
+      <Content>
+        <Row>
+          <Card>
+            <Description>{character.events.available}</Description>
+            <CardTitle>Events</CardTitle>
+          </Card>
+
+          <Card>
+            <Description>{character.comics.available}</Description>
+            <CardTitle>Comics</CardTitle>
+          </Card>
+        </Row>
+        <Row>
+          <Card>
+            <Description>{character.series.available}</Description>
+            <CardTitle>Series</CardTitle>
+          </Card>
+          <Card>
+            <Description>{character.stories.available}</Description>
+            <CardTitle>stories</CardTitle>
+          </Card>
+        </Row>
+      </Content>
+    </Container>
   );
 };
 
-export default Home;
+export default Detail;

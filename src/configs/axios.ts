@@ -1,23 +1,16 @@
 /* eslint-disable no-console */
 import axios from "axios";
 import Config from "react-native-config";
-import { stringMd5, binaryMd5 } from "react-native-quick-md5";
+import { binaryMd5 } from "react-native-quick-md5";
 
 const baseURL = "https://gateway.marvel.com/v1/public/";
-const pub = "d78552642e65f5eca6d2f116b85d488e";
-const priv = "8e32f1443d34ad9d7d1872d391d01634766fbe8c";
-
-const apikey = pub;
 
 const ts = Number(new Date());
-console.log({ Config });
 
-const hash = binaryMd5(ts + priv + pub);
+const privateKey = Config.PRIVATE_KEY as string;
+const apikey = Config.PUBLIC_KEY as string;
 
-console.log({
-  hash,
-  apikey,
-});
+const hash = binaryMd5(ts + privateKey + apikey);
 
 const api = axios.create({
   baseURL,
@@ -27,12 +20,5 @@ const api = axios.create({
     ts,
   },
 });
-
-api.interceptors.request.use(
-  (config) => {
-    return config;
-  },
-  (error) => Promise.reject(error)
-);
 
 export default api;
